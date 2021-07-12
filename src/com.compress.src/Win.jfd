@@ -1,0 +1,147 @@
+JFDML JFormDesigner: "7.0.4.0.360" Java: "11.0.9.1" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "this"
+			"iconImage": new com.jformdesigner.model.SwingIcon( 0, "/com.compress.resource/rar.png" )
+			"font": new java.awt.Font( "Microsoft YaHei UI Light", 0, 16 )
+			"defaultCloseOperation": 3
+			"title": "小压缩"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class javax.swing.BoxLayout ) ) {
+				name: "panel1"
+				"border": &EmptyBorder0 new javax.swing.border.EmptyBorder( 5, 5, 5, 5 )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "upPath"
+					"text": "返回"
+					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "upPathActionPerformed", true ) )
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "unZip"
+					"text": "解压"
+					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "zip"
+					"text": "压缩"
+					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "button4"
+					"text": "text"
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "North"
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPaneDirAndFile"
+				"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+				"border": #EmptyBorder0
+				add( new FormComponent( "javax.swing.JList" ) {
+					name: "showList"
+					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+					"border": #EmptyBorder0
+					addEvent( new FormEvent( "javax.swing.event.ListSelectionListener", "valueChanged", "showListValueChanged", true ) )
+					addEvent( new FormEvent( "java.awt.event.FocusListener", "focusGained", "showListFocusGained", true ) )
+					addEvent( new FormEvent( "java.beans.PropertyChangeListener", "propertyChange", "showListPropertyChange", true ) )
+					addEvent( new FormEvent( "javax.swing.event.ListSelectionListener", "valueChanged", "showListValueChanged", true ) )
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "showListMouseClicked", true ) )
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+			menuBar: new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
+				name: "menuBar1"
+				"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "menuFile"
+					"text": "文件"
+					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemOpen"
+						"text": "打开文件夹"
+						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemOpenActionPerformed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemCopy"
+						"text": "复制"
+						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemPaste"
+						"text": "粘贴"
+						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemReName"
+						"text": "重命名"
+						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemMakeDir"
+						"text": "新建文件夹"
+						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemMakeDirActionPerformed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemDelete"
+						"text": "删除"
+						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemDeleteActionPerformed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemInfo"
+						"text": "属性"
+						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemQuit"
+						"text": "退出"
+						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemQuitActionPerformed", true ) )
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "menuEditor"
+					"text": "编辑"
+					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemSelectAll"
+						"text": "全选"
+						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemSelectAllActionPerformed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemReserveSelect"
+						"text": "反选"
+						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemReserveSelectActionPerformed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemUnSelect"
+						"text": "全部取消"
+						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemUnSelectActionPerformed", true ) )
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "menuHelp"
+					"text": "帮助"
+					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemAbout"
+						"text": "关于"
+						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemAboutActionPerformed", true ) )
+					} )
+				} )
+			}
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 10, 0 )
+			"size": new java.awt.Dimension( 505, 410 )
+		} )
+	}
+}
