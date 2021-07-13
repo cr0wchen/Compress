@@ -5,7 +5,7 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 			name: "this"
-			"iconImage": new com.jformdesigner.model.SwingIcon( 0, "/com.compress.resource/rar.png" )
+			"iconImage": new com.jformdesigner.model.SwingIcon( 0, "/com.compress.resource/logo.png" )
 			"font": new java.awt.Font( "Microsoft YaHei UI Light", 0, 16 )
 			"defaultCloseOperation": 3
 			"title": "小压缩"
