@@ -15,7 +15,7 @@ import javax.swing.plaf.FontUIResource;
 
 
 /**
- * @author ï¿½ï¿½ï¿½ï¿½ï¿½
+ * @author ³ÂÐñ·å
  */
 public class Win extends JFrame {
     FileMgr fileMgr;
@@ -41,13 +41,13 @@ public class Win extends JFrame {
     private void menuItemSelectAllActionPerformed(ActionEvent e) {
         int len = fileMgr.listFiles().length;
         showList.setSelectionInterval(0, len - 1);
-        System.out.println("[debug] Ñ¡ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½" + showList.getSelectedIndices().length);
+        System.out.println("[debug] Ñ¡ÔñµÄÏîÄ¿ÊýÁ¿Îª£º" + showList.getSelectedIndices().length);
 
     }
 
     private void menuItemUnSelectActionPerformed(ActionEvent e) {
         showList.clearSelection();
-        System.out.println("[debug] " + "È¡ï¿½ï¿½Ñ¡ï¿½ï¿½");
+        System.out.println("[debug] " + "È¡ÏûÑ¡Ôñ¡£");
     }
 
     private void menuItemReserveSelectActionPerformed(ActionEvent e) {
@@ -67,7 +67,7 @@ public class Win extends JFrame {
             }
         }
         showList.setSelectedIndices(unArr);
-        System.out.println("[debug] " + "ï¿½ï¿½Ñ¡ï¿½ï¿½" + "ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª ï¿½ï¿½" + String.format("%d - %d = %d", len, arr.length, unArr.length));
+        System.out.println("[debug] " + "·´Ñ¡" + "·´Ñ¡µÄÊýÁ¿Îª£º" + String.format("%d - %d = %d", len, arr.length, unArr.length));
     }
 
     private void menuItemQuitActionPerformed(ActionEvent e) {
@@ -76,17 +76,16 @@ public class Win extends JFrame {
 
     private void menuItemAboutActionPerformed(ActionEvent e) {
         UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
-// ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½Ê¾Ð§ï¿½ï¿½
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
-        JOptionPane.showMessageDialog(this, "Ò»ï¿½ï¿½ï¿½òµ¥µÄ½ï¿½Ñ¹Ñ¹ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Ò»¸ö¼òµ¥µÄÑ¹Ëõ½âÑ¹Èí¼þ", "¹ØÓÚ", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void menuItemOpenActionPerformed(ActionEvent e) {
-        System.out.println("[debug] " + "open directoryï¿½ï¿½" + showList.getSelectedValue());
+        System.out.println("[debug] " + "open directory :" + showList.getSelectedValue());
         JFile ob = (JFile) showList.getSelectedValue();
         fileMgr.changeFile(ob.getAbsolutePath());
         flushShowList();
-        System.out.println("[debug] " + "ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ð£ï¿½" + fileMgr.getPath());
+        System.out.println("[debug] " + "´ò¿ªµÄÎÄ¼þ¼ÐÎª£º" + fileMgr.getPath());
     }
 
     private void showListValueChanged(ListSelectionEvent e) {
@@ -109,20 +108,19 @@ public class Win extends JFrame {
     }
 
     private void menuItemDeleteActionPerformed(ActionEvent e) {
-//        UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
-//// ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½Ê¾Ð§ï¿½ï¿½
-//        UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
-//        Object[] objects = showList.getSelectedValuesList().toArray();
-//        JFile[] ob = (JFile[]) objects;
-//        for (JFile jf : ob) {
-//            if (jf.exists()) {
-//                if (jf.delete()) {
-//                    JOptionPane.showMessageDialog(this, "É¾ï¿½ï¿½ï¿½É¹ï¿½");
-//                } else {
-//                    JOptionPane.showMessageDialog(this, "É¾ï¿½ï¿½Ê§ï¿½ï¿½");
-//                }
-//            }
-//        }
+        UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
+        UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
+        Object[] objects = showList.getSelectedValuesList().toArray();
+        JFile[] ob = (JFile[]) objects;
+        for (JFile jf : ob) {
+            if (jf.exists()) {
+                if (jf.delete()) {
+                    JOptionPane.showMessageDialog(this, "É¾³ý³É¹¦£¡");
+                } else {
+                    JOptionPane.showMessageDialog(this, "É¾³ýÊ§°Ü£¡");
+                }
+            }
+        }
     }
 
     private void showListMouseClicked(MouseEvent e) {
@@ -131,7 +129,7 @@ public class Win extends JFrame {
             if (ob.isDirectory()) {
                 fileMgr.changeFile(ob.getAbsolutePath());
                 flushShowList();
-                System.out.println("[debug] " + "ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ð£ï¿½" + fileMgr.getPath());
+                System.out.println("[debug] " + "´ò¿ªµÄÎÄ¼þ¼ÐÎª£º" + fileMgr.getPath());
             }
         }
     }
@@ -139,24 +137,22 @@ public class Win extends JFrame {
     private void upPathActionPerformed(ActionEvent e) {
         fileMgr.upPath();
         flushShowList();
-        System.out.println("[debug] " + "ï¿½ï¿½ï¿½ï¿½ï¿½Ï²ï¿½ï¿½Ä¼ï¿½ï¿½Ð£ï¿½" + fileMgr.getPath());
+        System.out.println("[debug] " + "·µ»ØÉÏ¼¶Ä¿Â¼£º" + fileMgr.getPath());
     }
 
     private void unZipActionPerformed(ActionEvent e) {
         JFile curFile = (JFile) showList.getSelectedValue();
         String dest = curFile.getAbsolutePath();
-//        dest = dest.substring(0, dest.lastIndexOf(".")) + "\\";//ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ä¬ï¿½Ï½ï¿½Ñ¹Â·ï¿½ï¿½
-        dest = dest.substring(0, dest.lastIndexOf("."));//ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ä¬ï¿½Ï½ï¿½Ñ¹Â·ï¿½ï¿½
+        dest = dest.substring(0, dest.lastIndexOf("."));//?1?7?1?7?1?7?1?7?1?7?0?4?1?7?1?7?1?7?0?8?1?7?0?1?1?7?0?9¡¤?1?7?1?7
         UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
-// ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½Ê¾Ð§ï¿½ï¿½
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
-        String s = JOptionPane.showInputDialog("ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½", dest);
-        System.out.println("[debug] " + "ï¿½Ä¼ï¿½ï¿½Ä½ï¿½Ñ¹Â·ï¿½ï¿½Îªï¿½ï¿½" + s);
+        String s = JOptionPane.showInputDialog("Ä¿±êÂ·¾¶£º", dest);
+        System.out.println("[debug] " + "Ä¿±êÂ·¾¶Îª" + s);
         try {
             UnZipFileMgr.upZip(curFile.getAbsolutePath(), s);
-            JOptionPane.showMessageDialog(this, "ï¿½ï¿½Ñ¹ï¿½É¹ï¿½ï¿½ï¿½");
+            JOptionPane.showMessageDialog(this, "½âÑ¹³É¹¦£¡");
         } catch (Exception ee) {
-            JOptionPane.showMessageDialog(this, "ï¿½ï¿½Ñ¹Ê§ï¿½Ü£ï¿½");
+            JOptionPane.showMessageDialog(this, "½âÑ¹Ê§°Ü£¡");
             ee.printStackTrace();
         }
         flushShowList();
@@ -190,7 +186,7 @@ public class Win extends JFrame {
         showList = new JList();
 
         //======== this ========
-        setIconImage(new ImageIcon(getClass().getResource("/com.compress.resource/rar.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/com.compress.resource/logo.png")).getImage());
         setFont(new Font("Microsoft YaHei UI Light", Font.PLAIN, 16));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("\u5c0f\u538b\u7f29");
