@@ -45,6 +45,7 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JList" ) {
 					name: "showList"
 					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+					"border": new javax.swing.border.EmptyBorder( 5, 5, 5, 5 )
 					addEvent( new FormEvent( "javax.swing.event.ListSelectionListener", "valueChanged", "showListValueChanged", true ) )
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "showListMouseClicked", true ) )
 				} )
