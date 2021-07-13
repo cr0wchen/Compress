@@ -22,11 +22,14 @@ new FormModel {
 					name: "unZip"
 					"text": "解压"
 					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+					"enabled": false
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "unZipActionPerformed", true ) )
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "zip"
 					"text": "压缩"
 					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+					"enabled": false
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "button4"
@@ -42,10 +45,6 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JList" ) {
 					name: "showList"
 					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
-					"border": #EmptyBorder0
-					addEvent( new FormEvent( "javax.swing.event.ListSelectionListener", "valueChanged", "showListValueChanged", true ) )
-					addEvent( new FormEvent( "java.awt.event.FocusListener", "focusGained", "showListFocusGained", true ) )
-					addEvent( new FormEvent( "java.beans.PropertyChangeListener", "propertyChange", "showListPropertyChange", true ) )
 					addEvent( new FormEvent( "javax.swing.event.ListSelectionListener", "valueChanged", "showListValueChanged", true ) )
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "showListMouseClicked", true ) )
 				} )
@@ -63,6 +62,7 @@ new FormModel {
 						name: "menuItemOpen"
 						"text": "打开文件夹"
 						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+						"enabled": false
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemOpenActionPerformed", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
