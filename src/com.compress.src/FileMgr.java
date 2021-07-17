@@ -8,6 +8,20 @@ import java.io.File;
 public class FileMgr {
     private File com;//当前文件夹的实例
 
+    public static void deleteAll(File file) {
+        if (file.isFile() || file.list().length == 0) {
+            file.delete();
+        } else {
+            File[] files = file.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                deleteAll(files[i]);
+                files[i].delete();
+            }
+            if (file.exists())         //如果文件本身就是目录 ，就要删除目录
+                file.delete();
+        }
+    }
+
     public FileMgr() {
         FileSystemView fsv = FileSystemView.getFileSystemView();
         com = fsv.getHomeDirectory();
@@ -50,6 +64,10 @@ public class FileMgr {
 
     public String getParent() {
         return com.getParent();
+    }
+
+    public String getName() {
+        return com.getName();
     }
 
     public String[] list() {

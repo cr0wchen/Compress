@@ -30,6 +30,7 @@ new FormModel {
 					"text": "压缩"
 					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
 					"enabled": false
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "zipActionPerformed", true ) )
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "button4"
@@ -91,6 +92,7 @@ new FormModel {
 						name: "menuItemDelete"
 						"text": "删除"
 						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+						"enabled": false
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemDeleteActionPerformed", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {

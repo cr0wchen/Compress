@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
+import java.util.zip.ZipOutputStream;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
@@ -36,18 +38,20 @@ public class Win extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800, 600);
         flushShowList();
+        UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
+        UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
     }
 
     private void menuItemSelectAllActionPerformed(ActionEvent e) {
         int len = fileMgr.listFiles().length;
         showList.setSelectionInterval(0, len - 1);
-        System.out.println("[debug] 选择的项目数量为：" + showList.getSelectedIndices().length);
+        System.out.println(String.format("[%s] ", showList.getClass()) + "选择的项目数量为：" + showList.getSelectedIndices().length);
 
     }
 
     private void menuItemUnSelectActionPerformed(ActionEvent e) {
         showList.clearSelection();
-        System.out.println("[debug] " + "取消选择。");
+        System.out.println(String.format("[%s] ", showList.getClass()) + "取消选择。");
     }
 
     private void menuItemReserveSelectActionPerformed(ActionEvent e) {
@@ -67,7 +71,7 @@ public class Win extends JFrame {
             }
         }
         showList.setSelectedIndices(unArr);
-        System.out.println("[debug] " + "反选" + "反选的数量为：" + String.format("%d - %d = %d", len, arr.length, unArr.length));
+        System.out.println(String.format("[%s] ", showList.getClass()) + "反选" + "反选的数量为：" + String.format("%d - %d = %d", len, arr.length, unArr.length));
     }
 
     private void menuItemQuitActionPerformed(ActionEvent e) {
@@ -75,52 +79,69 @@ public class Win extends JFrame {
     }
 
     private void menuItemAboutActionPerformed(ActionEvent e) {
-        UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
-        UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
         JOptionPane.showMessageDialog(this, "一个简单的压缩解压软件", "关于", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void menuItemOpenActionPerformed(ActionEvent e) {
-        System.out.println("[debug] " + "open directory :" + showList.getSelectedValue());
         JFile ob = (JFile) showList.getSelectedValue();
         fileMgr.changeFile(ob.getAbsolutePath());
         flushShowList();
-        System.out.println("[debug] " + "打开的文件夹为：" + fileMgr.getPath());
+        System.out.println(String.format("[%s] ", showList.getClass()) + "打开的文件夹为：" + fileMgr.getPath());
     }
 
     private void showListValueChanged(ListSelectionEvent e) {
         JFile m = (JFile) showList.getSelectedValue();
         if (showList.isSelectionEmpty()) {
             menuItemOpen.setEnabled(false);
-        } else if (m.isFile()) {
-            menuItemOpen.setEnabled(false);
-            unZip.setEnabled(true);
-        } else if (showList.getSelectedIndices().length != 1) {
-            menuItemOpen.setEnabled(false);
-        } else if (m.isDirectory()) {
-            menuItemOpen.setEnabled(true);
             unZip.setEnabled(false);
+            zip.setEnabled(false);
+            menuItemDelete.setEnabled(false);
+        } else {
+            if (showList.getSelectedIndices().length != 1) {
+                menuItemOpen.setEnabled(false);
+                zip.setEnabled(true);
+                unZip.setEnabled(false);
+            } else {
+                if (m.isFile()) {
+                    menuItemOpen.setEnabled(false);
+                    zip.setEnabled(true);
+                } else if (m.isDirectory()) {
+                    menuItemOpen.setEnabled(true);
+                    zip.setEnabled(false);
+                }
+                zip.setEnabled(true);
+                unZip.setEnabled(true);
+                menuItemDelete.setEnabled(true);
+            }
         }
     }
+
 
     private void menuItemMakeDirActionPerformed(ActionEvent e) {
         // TODO add your code here
     }
 
     private void menuItemDeleteActionPerformed(ActionEvent e) {
-        UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
-        UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
+        if (showList.isSelectionEmpty()) return;
         Object[] objects = showList.getSelectedValuesList().toArray();
-        JFile[] ob = (JFile[]) objects;
-        for (JFile jf : ob) {
+        boolean judgeAcc = true;
+        for (Object itm : objects) {
+            JFile jf = (JFile) itm;
+            FileMgr.deleteAll(jf);
             if (jf.exists()) {
-                if (jf.delete()) {
-                    JOptionPane.showMessageDialog(this, "删除成功！");
-                } else {
-                    JOptionPane.showMessageDialog(this, "删除失败！");
-                }
+                judgeAcc = false;
+            } else {
+                System.out.println(String.format("[%s] ", FileMgr.class) + "删除文件夹：" + jf.getPath());
             }
         }
+        if (judgeAcc == false) {
+            JOptionPane.showMessageDialog(this, "删除失败！");
+        } else {
+            JOptionPane.showMessageDialog(this, "删除成功！");
+        }
+
+        flushShowList();
+
     }
 
     private void showListMouseClicked(MouseEvent e) {
@@ -129,7 +150,7 @@ public class Win extends JFrame {
             if (ob.isDirectory()) {
                 fileMgr.changeFile(ob.getAbsolutePath());
                 flushShowList();
-                System.out.println("[debug] " + "打开的文件夹为：" + fileMgr.getPath());
+                System.out.println(String.format("[%s] ", fileMgr.getClass()) + "打开的文件夹为：" + fileMgr.getPath());
             }
         }
     }
@@ -137,23 +158,53 @@ public class Win extends JFrame {
     private void upPathActionPerformed(ActionEvent e) {
         fileMgr.upPath();
         flushShowList();
-        System.out.println("[debug] " + "返回上级目录：" + fileMgr.getPath());
+        System.out.println(String.format("[%s] ", fileMgr.getClass()) + "返回上级目录：" + fileMgr.getPath());
     }
 
     private void unZipActionPerformed(ActionEvent e) {
+        if (showList.isSelectionEmpty()) return;
         JFile curFile = (JFile) showList.getSelectedValue();
         String dest = curFile.getAbsolutePath();
-        dest = dest.substring(0, dest.lastIndexOf("."));//?1?7?1?7?1?7?1?7?1?7?0?4?1?7?1?7?1?7?0?8?1?7?0?1?1?7?0?9·?1?7?1?7
-        UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
-        UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
+        dest = dest.substring(0, dest.lastIndexOf("."));
         String s = JOptionPane.showInputDialog("目标路径：", dest);
-        System.out.println("[debug] " + "目标路径为" + s);
+        if (s == null) {
+            System.out.println(String.format("[%s] ", showList.getClass()) + "取消解压。");
+            return;
+        }
+        System.out.println(String.format("[%s] ", EntryMgr.class) + "解压，" + "目标路径为" + s);
         try {
-            UnZipFileMgr.upZip(curFile.getAbsolutePath(), s);
+            EntryMgr.upZip(curFile.getAbsolutePath(), s);
             JOptionPane.showMessageDialog(this, "解压成功！");
         } catch (Exception ee) {
             JOptionPane.showMessageDialog(this, "解压失败！");
             ee.printStackTrace();
+        }
+        flushShowList();
+    }
+
+    private void zipActionPerformed(ActionEvent e) {
+        if (showList.isSelectionEmpty()) return;
+        List obList = showList.getSelectedValuesList();
+        System.out.println("开始");
+        String dest = fileMgr.getPath() + JFile.separator + fileMgr.getName() + ".zip";
+        UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
+        UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
+        String s = JOptionPane.showInputDialog("目标文件：", dest);
+        if (s == null) {
+            System.out.println(String.format("[%s] ", showList.getClass()) + "取消压缩。");
+            return;
+        }
+        System.out.println(String.format("[%s] ", EntryMgr.class) + "目标路径为" + s);
+        try {
+            File[] fList = new File[obList.size()];
+            for (int i = 0; i < obList.size(); i++) {
+                fList[i] = (File) obList.get(i);//转换数组中为类型
+            }
+            EntryMgr.entryFileArray(fList, s);//压缩文件
+            JOptionPane.showMessageDialog(this, "压缩成功！");
+        } catch (Exception ee) {
+            ee.printStackTrace();
+            JOptionPane.showMessageDialog(this, "压缩失败！");
         }
         flushShowList();
     }
@@ -233,6 +284,7 @@ public class Win extends JFrame {
                 //---- menuItemDelete ----
                 menuItemDelete.setText("\u5220\u9664");
                 menuItemDelete.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
+                menuItemDelete.setEnabled(false);
                 menuItemDelete.addActionListener(e -> menuItemDeleteActionPerformed(e));
                 menuFile.add(menuItemDelete);
 
@@ -311,6 +363,7 @@ public class Win extends JFrame {
             zip.setText("\u538b\u7f29");
             zip.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
             zip.setEnabled(false);
+            zip.addActionListener(e -> zipActionPerformed(e));
             panel1.add(zip);
 
             //---- button4 ----
