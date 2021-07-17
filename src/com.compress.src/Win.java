@@ -5,7 +5,6 @@ import java.awt.event.*;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.zip.ZipOutputStream;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
@@ -118,7 +117,19 @@ public class Win extends JFrame {
 
 
     private void menuItemMakeDirActionPerformed(ActionEvent e) {
-        // TODO add your code here
+        String dir = "";
+        dir = JOptionPane.showInputDialog(Win.this, "文件夹名：", "新建文件夹");
+        if (dir == null) {
+            return;//取消创建
+        }
+        File file = new File(fileMgr.getPath() + File.separator + dir);
+        System.out.println(String.format("[%s] ", FileMgr.class) + "创建文件夹：" + file.getPath());
+        if (file.mkdir()) {
+            JOptionPane.showMessageDialog(this, "创建成功！");
+        } else {
+            JOptionPane.showMessageDialog(this, "创建失败！");
+        }
+        flushShowList();
     }
 
     private void menuItemDeleteActionPerformed(ActionEvent e) {
