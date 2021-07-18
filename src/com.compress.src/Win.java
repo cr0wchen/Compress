@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.security.Key;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -42,6 +43,20 @@ public class Win extends JFrame {
         flushShowList();
         UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
+        {//设置按键的快捷键
+            menuFile.setMnemonic('F');
+            menuEditor.setMnemonic('E');
+            menuItemOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
+            menuItemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
+            menuItemPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));
+            menuItemReName.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
+            menuItemMakeDir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
+            menuItemDelete.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
+            menuItemQuit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_DOWN_MASK));
+
+            menuItemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
+            menuItemUnSelect.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
+        }
     }
 
     private void menuItemSelectAllActionPerformed(ActionEvent e) {
@@ -81,7 +96,8 @@ public class Win extends JFrame {
     }
 
     private void menuItemAboutActionPerformed(ActionEvent e) {
-        JOptionPane.showMessageDialog(this, "一个简单的压缩解压软件", "关于", JOptionPane.INFORMATION_MESSAGE);
+        String info = "<html><body>一个简单的压缩软件\n创建时间：2021年7月10日\n小组成员：陈旭峰、李佳、李天骄\n功能：zip文件的解压和压缩，文件的删除、复制、重命名，文件夹的新建";
+        JOptionPane.showMessageDialog(this, info, "关于", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void menuItemOpenActionPerformed(ActionEvent e) {
@@ -150,6 +166,15 @@ public class Win extends JFrame {
     private void menuItemDeleteActionPerformed(ActionEvent e) {
         if (showList.isSelectionEmpty()) return;
         Object[] objects = showList.getSelectedValuesList().toArray();
+        String info = "<html><body>";
+        for (Object itm : objects) {
+            info += ((File) itm).getName() + "\n";
+        }
+        int ans = JOptionPane.showConfirmDialog(Win.this, info, "删除如下文件吗？", JOptionPane.OK_CANCEL_OPTION);
+        if (ans == JOptionPane.CANCEL_OPTION) {
+            System.out.println(String.format("[%s] ", FileMgr.class) + "取消删除。");
+            return;
+        }
         boolean judgeAcc = true;
         for (Object itm : objects) {
             JFile jf = (JFile) itm;
@@ -167,7 +192,6 @@ public class Win extends JFrame {
         }
 
         flushShowList();
-
     }
 
     private void showListMouseClicked(MouseEvent e) {
@@ -347,6 +371,7 @@ public class Win extends JFrame {
                 //---- menuItemPaste ----
                 menuItemPaste.setText("\u7c98\u8d34");
                 menuItemPaste.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
+                menuItemPaste.setEnabled(false);
                 menuItemPaste.addActionListener(e -> menuItemPasteActionPerformed(e));
                 menuFile.add(menuItemPaste);
 
