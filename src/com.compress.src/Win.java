@@ -3,6 +3,7 @@ package com.compress.src;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -122,6 +123,11 @@ public class Win extends JFrame {
                 menuItemReName.setEnabled(true);
                 menuItemInfo.setEnabled(true);
             }
+        }
+        if (fileMgr.hasCopyBuff()) {//点了复制以后才能粘贴
+            menuItemPaste.setEnabled(true);
+        } else {
+            menuItemPaste.setEnabled(false);
         }
     }
 
@@ -260,6 +266,27 @@ public class Win extends JFrame {
         JOptionPane.showMessageDialog(this, info, "属性", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    private void menuItemCopyActionPerformed(ActionEvent e) {
+        Object[] objects = showList.getSelectedValuesList().toArray();
+        File[] files = new File[objects.length];
+        for (int i = 0; i < objects.length; i++) {
+            files[i] = (File) objects[i];//转换Object类型为File类型
+            System.out.println(String.format("[%s] ", FileMgr.class) + "复制文件：" + files[i].getPath());
+        }
+        fileMgr.copy(files);
+        menuItemPaste.setEnabled(true);
+    }
+
+    private void menuItemPasteActionPerformed(ActionEvent e) {
+        try {
+            fileMgr.paste(fileMgr.getPath());
+        } catch (IOException ee) {
+            ee.printStackTrace();
+            System.out.println(String.format("[%s] ", FileMgr.class) + "粘贴文件失败！！");
+        }
+        flushShowList();
+    }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -283,7 +310,6 @@ public class Win extends JFrame {
         upPath = new JButton();
         unZip = new JButton();
         zip = new JButton();
-        button4 = new JButton();
         scrollPaneDirAndFile = new JScrollPane();
         showList = new JList();
 
@@ -315,11 +341,13 @@ public class Win extends JFrame {
                 menuItemCopy.setText("\u590d\u5236");
                 menuItemCopy.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
                 menuItemCopy.setEnabled(false);
+                menuItemCopy.addActionListener(e -> menuItemCopyActionPerformed(e));
                 menuFile.add(menuItemCopy);
 
                 //---- menuItemPaste ----
                 menuItemPaste.setText("\u7c98\u8d34");
                 menuItemPaste.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
+                menuItemPaste.addActionListener(e -> menuItemPasteActionPerformed(e));
                 menuFile.add(menuItemPaste);
 
                 //---- menuItemReName ----
@@ -421,10 +449,6 @@ public class Win extends JFrame {
             zip.setEnabled(false);
             zip.addActionListener(e -> zipActionPerformed(e));
             panel1.add(zip);
-
-            //---- button4 ----
-            button4.setText("text");
-            panel1.add(button4);
         }
         contentPane.add(panel1, BorderLayout.NORTH);
 
@@ -472,7 +496,6 @@ public class Win extends JFrame {
     private JButton upPath;
     private JButton unZip;
     private JButton zip;
-    private JButton button4;
     private JScrollPane scrollPaneDirAndFile;
     private JList showList;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
