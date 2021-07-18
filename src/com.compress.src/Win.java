@@ -3,7 +3,9 @@ package com.compress.src;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -95,11 +97,16 @@ public class Win extends JFrame {
             unZip.setEnabled(false);
             zip.setEnabled(false);
             menuItemDelete.setEnabled(false);
+            menuItemCopy.setEnabled(false);
+            menuItemReName.setEnabled(false);
+            menuItemInfo.setEnabled(false);
         } else {
             if (showList.getSelectedIndices().length != 1) {
                 menuItemOpen.setEnabled(false);
                 zip.setEnabled(true);
                 unZip.setEnabled(false);
+                menuItemReName.setEnabled(false);
+                menuItemInfo.setEnabled(false);
             } else {
                 if (m.isFile()) {
                     menuItemOpen.setEnabled(false);
@@ -111,14 +118,16 @@ public class Win extends JFrame {
                 zip.setEnabled(true);
                 unZip.setEnabled(true);
                 menuItemDelete.setEnabled(true);
+                menuItemCopy.setEnabled(true);
+                menuItemReName.setEnabled(true);
+                menuItemInfo.setEnabled(true);
             }
         }
     }
 
 
     private void menuItemMakeDirActionPerformed(ActionEvent e) {
-        String dir = "";
-        dir = JOptionPane.showInputDialog(Win.this, "文件夹名：", "新建文件夹");
+        String dir = JOptionPane.showInputDialog(Win.this, "文件夹名：", "新建文件夹");
         if (dir == null) {
             return;//取消创建
         }
@@ -220,6 +229,37 @@ public class Win extends JFrame {
         flushShowList();
     }
 
+    private void menuItemReNameActionPerformed(ActionEvent e) {
+        if (showList.isSelectionEmpty()) return;
+        File file = (File) showList.getSelectedValue();
+        String fileName = JOptionPane.showInputDialog(Win.this, "重命名为：", file.getName());
+        if (fileName == null) {
+            return;//取消创建
+        }
+        String preName = file.getPath();
+        int lastIndex = preName.lastIndexOf(file.getName());//从后往前匹配原文件名
+        String newName = preName.substring(0, lastIndex) + fileName;
+        File newFile = new File(newName);
+        System.out.println(String.format("[%s] ", FileMgr.class) + "重命名为：" + newFile.getPath());
+        if (file.renameTo(newFile)) {
+            JOptionPane.showMessageDialog(this, "重命名成功！");
+        } else {
+            JOptionPane.showMessageDialog(this, "重命名失败！");
+        }
+        flushShowList();
+    }
+
+    private void menuItemInfoActionPerformed(ActionEvent e) {
+        File file = (File) showList.getSelectedValue();
+        String type = file.isFile() ? "文件" : "文件夹";
+        Date date = new Date(file.lastModified());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  hh:mm");
+        String lastModified = sdf.format(date);
+        String hidden = file.isHidden() ? "是" : "否";
+        String info = String.format("<html><body>类型：%s\n位置：%s\n名称：%s \n大小：%d字节\n最后修改时间：%s\n是否隐藏：%s", type, file.getAbsolutePath(), file.getName(), file.length(), lastModified, hidden);
+        JOptionPane.showMessageDialog(this, info, "属性", JOptionPane.INFORMATION_MESSAGE);
+    }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -274,6 +314,7 @@ public class Win extends JFrame {
                 //---- menuItemCopy ----
                 menuItemCopy.setText("\u590d\u5236");
                 menuItemCopy.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
+                menuItemCopy.setEnabled(false);
                 menuFile.add(menuItemCopy);
 
                 //---- menuItemPaste ----
@@ -284,6 +325,8 @@ public class Win extends JFrame {
                 //---- menuItemReName ----
                 menuItemReName.setText("\u91cd\u547d\u540d");
                 menuItemReName.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
+                menuItemReName.setEnabled(false);
+                menuItemReName.addActionListener(e -> menuItemReNameActionPerformed(e));
                 menuFile.add(menuItemReName);
 
                 //---- menuItemMakeDir ----
@@ -302,6 +345,8 @@ public class Win extends JFrame {
                 //---- menuItemInfo ----
                 menuItemInfo.setText("\u5c5e\u6027");
                 menuItemInfo.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
+                menuItemInfo.setEnabled(false);
+                menuItemInfo.addActionListener(e -> menuItemInfoActionPerformed(e));
                 menuFile.add(menuItemInfo);
 
                 //---- menuItemQuit ----

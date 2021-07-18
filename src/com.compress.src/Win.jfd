@@ -71,6 +71,7 @@ new FormModel {
 						name: "menuItemCopy"
 						"text": "复制"
 						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+						"enabled": false
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemPaste"
@@ -81,6 +82,8 @@ new FormModel {
 						name: "menuItemReName"
 						"text": "重命名"
 						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+						"enabled": false
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemReNameActionPerformed", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemMakeDir"
@@ -99,6 +102,8 @@ new FormModel {
 						name: "menuItemInfo"
 						"text": "属性"
 						"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+						"enabled": false
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemInfoActionPerformed", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemQuit"
