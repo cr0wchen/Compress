@@ -4,6 +4,9 @@ import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.net.URI;
 
+/**
+ * 文件类，重写了toString和compareTo方法，用于存放在Jlist中
+ */
 public class JFile extends File {
 
     public JFile(String s) {
@@ -11,26 +14,8 @@ public class JFile extends File {
     }
 
     /**
-     * 重写compareTo方法，使其文件夹优先
-     *
-     * @param file 用于比较的对象
-     * @return -1,0,1分别代表小于、等于、大于
+     * File类原本的构造方法，由IEDA自动生成
      */
-    @Override
-    public int compareTo(File file) {
-        int result = 0;
-        if (this.isDirectory() && file.isDirectory()) {
-            result = this.getName().compareTo(file.getName());
-        } else if (this.isDirectory() && file.isFile()) {
-            result = -1;
-        } else if (this.isFile() && file.isFile()) {
-            result = this.getName().compareTo(file.getName());
-        } else {
-            result = 1;
-        }
-        return result;
-    }
-
     public JFile(String s, String s1) {
         super(s, s1);
     }
@@ -53,7 +38,28 @@ public class JFile extends File {
         if (this.isFile())
             return getName();
         else
-            return "/" + this.getName();
+            return "/" + this.getName();//文件夹前面加个斜杠
+    }
+
+    /**
+     * 重写compareTo方法，使其文件夹优先
+     *
+     * @param file 用于比较的对象
+     * @return -1,0,1分别代表小于、等于、大于
+     */
+    @Override
+    public int compareTo(File file) {
+        int result = 0;
+        if (this.isDirectory() && file.isDirectory()) {
+            result = this.getName().compareTo(file.getName());
+        } else if (this.isDirectory() && file.isFile()) {
+            result = -1;
+        } else if (this.isFile() && file.isFile()) {
+            result = this.getName().compareTo(file.getName());
+        } else {
+            result = 1;
+        }
+        return result;
     }
 
     public static void main(String[] args) {
