@@ -153,7 +153,7 @@ public class FileMgr {
     }
 
     /**
-     * 放上上层目录
+     * 返回上层目录
      *
      * @return true代表成功
      */
