@@ -9,6 +9,7 @@ new FormModel {
 			"font": new java.awt.Font( "Microsoft YaHei UI Light", 0, 16 )
 			"defaultCloseOperation": 3
 			"title": "小压缩"
+			"minimumSize": new java.awt.Dimension( 800, 600 )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
 				"alignment": 0
 				"vgap": 2

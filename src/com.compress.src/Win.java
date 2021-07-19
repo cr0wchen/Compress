@@ -22,26 +22,27 @@ import javax.swing.plaf.FontUIResource;
  * @author 陈旭峰
  */
 public class Win extends JFrame {
-    FileMgr fileMgr;
+    FileMgr fileMgr;//文件管理类
 
+    /**
+     * 刷新当前目录下显示的文件
+     */
     public void flushShowList() {
-        File[] allFiles = fileMgr.listFiles();
-        JFile[] arr = new JFile[allFiles.length];
+        File[] allFiles = fileMgr.listFiles();//获取文件类数组
+        JFile[] arr = new JFile[allFiles.length];//创建一个JFile类数据
         for (int i = 0; i < arr.length; i++) {
             arr[i] = new JFile(allFiles[i].getAbsolutePath());
         }
-        Arrays.sort(arr);
-        showList.setListData(arr);
+        Arrays.sort(arr);//按文件夹优先顺序排序
+        showList.setListData(arr);//设置JList中为元素
     }
 
     public Win() {
-        initComponents();
+        initComponents();//初始化各种组件
         fileMgr = new FileMgr();
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(800, 600);
-        flushShowList();
-        UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
-        UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
+        flushShowList();//刷新当前目录显示的文件
+        UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));//设置对话框按钮字体的样式
+        UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));//设置对话框消息字体样式
         {//设置按键的快捷键
             menuFile.setMnemonic('F');
             menuEditor.setMnemonic('E');
@@ -52,19 +53,28 @@ public class Win extends JFrame {
             menuItemMakeDir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
             menuItemDelete.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
             menuItemQuit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_DOWN_MASK));
-
             menuItemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
             menuItemUnSelect.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
         }
     }
 
+    /**
+     * 全选操作的事件监听
+     *
+     * @param e
+     */
     private void menuItemSelectAllActionPerformed(ActionEvent e) {
         int len = fileMgr.listFiles().length;
-        showList.setSelectionInterval(0, len - 1);
+        showList.setSelectionInterval(0, len - 1);//设置全选区间
         System.out.println(String.format("[%s] ", showList.getClass()) + "选择的项目数量为：" + showList.getSelectedIndices().length);
 
     }
 
+    /**
+     * 反选事件监听
+     *
+     * @param e
+     */
     private void menuItemUnSelectActionPerformed(ActionEvent e) {
         showList.clearSelection();
         System.out.println(String.format("[%s] ", showList.getClass()) + "取消选择。");
@@ -72,43 +82,63 @@ public class Win extends JFrame {
 
     private void menuItemReserveSelectActionPerformed(ActionEvent e) {
         int len = fileMgr.listFiles().length;
-        int[] arr = showList.getSelectedIndices();
-        showList.clearSelection();
-        if (arr.length == len) return;
-        int[] unArr = new int[len - arr.length];
-        boolean[] allArr = new boolean[len];
+        int[] arr = showList.getSelectedIndices();//获取选中的项目下标
+        showList.clearSelection();//清空选中状态
+        if (arr.length == len) return;//如果是全选直接返回
+        int[] unArr = new int[len - arr.length];//设置未选中下标数组的大小
+        boolean[] allArr = new boolean[len];//标记数组，用来看哪些下标被选中了
         int index = 0;
         for (int j : arr) {
-            allArr[j] = true;
+            allArr[j] = true;//将选中为下标置为true
         }
         for (int i = 0; i < len; i++) {
-            if (!allArr[i]) {
+            if (!allArr[i]) {//只要该下标还没选中，将下标放到反选数组中
                 unArr[index++] = i;
             }
         }
-        showList.setSelectedIndices(unArr);
+        showList.setSelectedIndices(unArr);//设置反选数组
         System.out.println(String.format("[%s] ", showList.getClass()) + "反选" + "反选的数量为：" + String.format("%d - %d = %d", len, arr.length, unArr.length));
     }
 
+    /**
+     * 退出时间监听
+     *
+     * @param e
+     */
     private void menuItemQuitActionPerformed(ActionEvent e) {
         System.exit(0);
     }
 
+    /**
+     * 关于按钮的事件监听，使用html来实现换行
+     *
+     * @param e
+     */
     private void menuItemAboutActionPerformed(ActionEvent e) {
         String info = "<html><body>一个简单的压缩软件\n创建时间：2021年7月10日\n小组成员：陈旭峰、李佳、李天骄\n功能：zip文件的解压和压缩，文件的删除、复制、重命名，文件夹的新建";
-        JOptionPane.showMessageDialog(this, info, "关于", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, info, "关于", JOptionPane.INFORMATION_MESSAGE);//弹出消息对话框
     }
 
+    /**
+     * 打开文件夹的事件监听
+     *
+     * @param e
+     */
     private void menuItemOpenActionPerformed(ActionEvent e) {
-        JFile ob = (JFile) showList.getSelectedValue();
-        fileMgr.changeFile(ob.getAbsolutePath());
-        flushShowList();
+        JFile ob = (JFile) showList.getSelectedValue();//获取被选中的文件夹，由于通过按键的激活状态控制保证一定存在选中的文件夹
+        fileMgr.changeFile(ob.getAbsolutePath());//改变当前文件夹目录
+        flushShowList();//刷新
         System.out.println(String.format("[%s] ", showList.getClass()) + "打开的文件夹为：" + fileMgr.getPath());
     }
 
+    /**
+     * 各种按钮的激活状态设置
+     *
+     * @param e
+     */
     private void showListValueChanged(ListSelectionEvent e) {
         JFile m = (JFile) showList.getSelectedValue();
-        if (showList.isSelectionEmpty()) {
+        if (showList.isSelectionEmpty()) {//一个也没选中时
             menuItemOpen.setEnabled(false);
             unZip.setEnabled(false);
             zip.setEnabled(false);
@@ -117,13 +147,13 @@ public class Win extends JFrame {
             menuItemReName.setEnabled(false);
             menuItemInfo.setEnabled(false);
         } else {
-            if (showList.getSelectedIndices().length != 1) {
+            if (showList.getSelectedIndices().length != 1) {//选中一个时
                 menuItemOpen.setEnabled(false);
                 zip.setEnabled(true);
                 unZip.setEnabled(false);
                 menuItemReName.setEnabled(false);
                 menuItemInfo.setEnabled(false);
-            } else {
+            } else {//选中多个时
                 if (m.isFile()) {
                     menuItemOpen.setEnabled(false);
                     zip.setEnabled(true);
@@ -131,6 +161,7 @@ public class Win extends JFrame {
                     menuItemOpen.setEnabled(true);
                     zip.setEnabled(false);
                 }
+                //选中多个时的默认操作
                 zip.setEnabled(true);
                 unZip.setEnabled(true);
                 menuItemDelete.setEnabled(true);
@@ -147,37 +178,47 @@ public class Win extends JFrame {
     }
 
 
+    /**
+     * 创建文件夹事件监听
+     *
+     * @param e
+     */
     private void menuItemMakeDirActionPerformed(ActionEvent e) {
-        String dir = JOptionPane.showInputDialog(Win.this, "文件夹名：", "新建文件夹");
-        if (dir == null) {
+        String dir = JOptionPane.showInputDialog(Win.this, "文件夹名：", "新建文件夹");//获取输入的文件夹名字
+        if (dir == null) {//没输入就取消创建
             return;//取消创建
         }
         File file = new File(fileMgr.getPath() + File.separator + dir);
         System.out.println(String.format("[%s] ", FileMgr.class) + "创建文件夹：" + file.getPath());
-        if (file.mkdir()) {
+        if (file.mkdir()) {//判断是否创建成功
             JOptionPane.showMessageDialog(this, "创建成功！");
         } else {
             JOptionPane.showMessageDialog(this, "创建失败！");
         }
-        flushShowList();
+        flushShowList();//刷新
     }
 
+    /**
+     * 删除文件或文件夹事件监听
+     *
+     * @param e
+     */
     private void menuItemDeleteActionPerformed(ActionEvent e) {
-        if (showList.isSelectionEmpty()) return;
-        Object[] objects = showList.getSelectedValuesList().toArray();
+        if (showList.isSelectionEmpty()) return;//如果选中状态为空，直接返回
+        Object[] objects = showList.getSelectedValuesList().toArray();//获取待删除的文件
         String info = "<html><body>";
         for (Object itm : objects) {
-            info += ((File) itm).getName() + "\n";
+            info += ((File) itm).getName() + "\n";//构造输出的文件名，用于调试
         }
-        int ans = JOptionPane.showConfirmDialog(Win.this, info, "删除如下文件吗？", JOptionPane.OK_CANCEL_OPTION);
+        int ans = JOptionPane.showConfirmDialog(Win.this, info, "删除如下文件吗？", JOptionPane.OK_CANCEL_OPTION);//获取删除信息
         if (ans == JOptionPane.CANCEL_OPTION) {
             System.out.println(String.format("[%s] ", FileMgr.class) + "取消删除。");
             return;
         }
-        boolean judgeAcc = true;
+        boolean judgeAcc = true;//记录删除是否成功，防止弹窗弹出多次
         for (Object itm : objects) {
-            JFile jf = (JFile) itm;
-            FileMgr.deleteAll(jf);
+            JFile jf = (JFile) itm;//更改类型为File类
+            FileMgr.deleteAll(jf);//删除
             if (jf.exists()) {
                 judgeAcc = false;
             } else {
@@ -190,9 +231,14 @@ public class Win extends JFrame {
             JOptionPane.showMessageDialog(this, "删除成功！");
         }
 
-        flushShowList();
+        flushShowList();//刷新
     }
 
+    /**
+     * 鼠标双击时间监听，功能同打开文件夹
+     *
+     * @param e
+     */
     private void showListMouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2) {
             JFile ob = (JFile) showList.getSelectedValue();
@@ -204,25 +250,35 @@ public class Win extends JFrame {
         }
     }
 
+    /**
+     * 返回上层目录
+     *
+     * @param e
+     */
     private void upPathActionPerformed(ActionEvent e) {
         fileMgr.upPath();
         flushShowList();
         System.out.println(String.format("[%s] ", fileMgr.getClass()) + "返回上级目录：" + fileMgr.getPath());
     }
 
+    /**
+     * 解压文件事件监听
+     *
+     * @param e
+     */
     private void unZipActionPerformed(ActionEvent e) {
-        if (showList.isSelectionEmpty()) return;
-        JFile curFile = (JFile) showList.getSelectedValue();
-        String dest = curFile.getAbsolutePath();
-        dest = dest.substring(0, dest.lastIndexOf("."));
-        String s = JOptionPane.showInputDialog("目标路径：", dest);
-        if (s == null) {
+        if (showList.isSelectionEmpty()) return;//选中事件为空，无待解压的文件
+        JFile curFile = (JFile) showList.getSelectedValue();//获取待解压的文件
+        String dest = curFile.getAbsolutePath();//获取该文件的路径
+        dest = dest.substring(0, dest.lastIndexOf("."));//构造目标路径，默认为统一目录下的同名文件夹
+        String s = JOptionPane.showInputDialog("目标路径：", dest);//用户输入目录
+        if (s == null) {//为空时取消解压
             System.out.println(String.format("[%s] ", showList.getClass()) + "取消解压。");
             return;
         }
         System.out.println(String.format("[%s] ", EntryMgr.class) + "解压，" + "目标路径为" + s);
         try {
-            EntryMgr.upZip(curFile.getAbsolutePath(), s);
+            EntryMgr.upZip(curFile.getAbsolutePath(), s);//调用静态方法解压文件
             JOptionPane.showMessageDialog(this, "解压成功！");
         } catch (Exception ee) {
             JOptionPane.showMessageDialog(this, "解压失败！");
@@ -231,14 +287,16 @@ public class Win extends JFrame {
         flushShowList();
     }
 
+    /**
+     * 压缩文件的事件监听
+     *
+     * @param e
+     */
     private void zipActionPerformed(ActionEvent e) {
         if (showList.isSelectionEmpty()) return;
-        List obList = showList.getSelectedValuesList();
-        System.out.println("开始");
-        String dest = fileMgr.getPath() + JFile.separator + fileMgr.getName() + ".zip";
-        UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
-        UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));
-        String s = JOptionPane.showInputDialog("目标文件：", dest);
+        List obList = showList.getSelectedValuesList();//获取选中的文件List
+        String dest = fileMgr.getPath() + JFile.separator + fileMgr.getName() + ".zip";//默认压缩文件名
+        String s = JOptionPane.showInputDialog("目标文件：", dest);//获取用户输入的文件名
         if (s == null) {
             System.out.println(String.format("[%s] ", showList.getClass()) + "取消压缩。");
             return;
@@ -258,16 +316,21 @@ public class Win extends JFrame {
         flushShowList();
     }
 
+    /**
+     * 重命名文件或文件夹的事件监听
+     *
+     * @param e
+     */
     private void menuItemReNameActionPerformed(ActionEvent e) {
         if (showList.isSelectionEmpty()) return;
-        File file = (File) showList.getSelectedValue();
-        String fileName = JOptionPane.showInputDialog(Win.this, "重命名为：", file.getName());
+        File file = (File) showList.getSelectedValue();//获取选中的File
+        String fileName = JOptionPane.showInputDialog(Win.this, "重命名为：", file.getName());//获取用户输入的文件名
         if (fileName == null) {
             return;//取消创建
         }
         String preName = file.getPath();
-        int lastIndex = preName.lastIndexOf(file.getName());//从后往前匹配原文件名
-        String newName = preName.substring(0, lastIndex) + fileName;
+        int lastIndex = preName.lastIndexOf(file.getName());//从后往前匹配原文件名，只更改最后一个匹配到的字符串
+        String newName = preName.substring(0, lastIndex) + fileName;//构造新文件名
         File newFile = new File(newName);
         System.out.println(String.format("[%s] ", FileMgr.class) + "重命名为：" + newFile.getPath());
         if (file.renameTo(newFile)) {
@@ -278,31 +341,46 @@ public class Win extends JFrame {
         flushShowList();
     }
 
+    /**
+     * 获取文件属性事件监听
+     *
+     * @param e
+     */
     private void menuItemInfoActionPerformed(ActionEvent e) {
-        File file = (File) showList.getSelectedValue();
-        String type = file.isFile() ? "文件" : "文件夹";
-        Date date = new Date(file.lastModified());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  hh:mm");
+        File file = (File) showList.getSelectedValue();//获取文件
+        String type = file.isFile() ? "文件" : "文件夹";//文件类型
+        Date date = new Date(file.lastModified());//修改时间
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  hh:mm");//格式化时间
         String lastModified = sdf.format(date);
-        String hidden = file.isHidden() ? "是" : "否";
+        String hidden = file.isHidden() ? "是" : "否";//文件是否隐藏
         String info = String.format("<html><body>类型：%s\n位置：%s\n名称：%s \n大小：%d字节\n最后修改时间：%s\n是否隐藏：%s", type, file.getAbsolutePath(), file.getName(), file.length(), lastModified, hidden);
         JOptionPane.showMessageDialog(this, info, "属性", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * 复制文件事件监听
+     *
+     * @param e
+     */
     private void menuItemCopyActionPerformed(ActionEvent e) {
-        Object[] objects = showList.getSelectedValuesList().toArray();
+        Object[] objects = showList.getSelectedValuesList().toArray();//获取选中的文件数组
         File[] files = new File[objects.length];
         for (int i = 0; i < objects.length; i++) {
             files[i] = (File) objects[i];//转换Object类型为File类型
             System.out.println(String.format("[%s] ", FileMgr.class) + "复制文件：" + files[i].getPath());
         }
-        fileMgr.copy(files);
-        menuItemPaste.setEnabled(true);
+        fileMgr.copy(files);//复制
+        menuItemPaste.setEnabled(true);//激活粘贴按钮
     }
 
+    /**
+     * 粘贴事件监听
+     *
+     * @param e
+     */
     private void menuItemPasteActionPerformed(ActionEvent e) {
         try {
-            fileMgr.paste(fileMgr.getPath());
+            fileMgr.paste(fileMgr.getPath());//粘贴到当前目录
         } catch (IOException ee) {
             ee.printStackTrace();
             System.out.println(String.format("[%s] ", FileMgr.class) + "粘贴文件失败！！");
@@ -311,6 +389,9 @@ public class Win extends JFrame {
     }
 
 
+    /**
+     * 各种组件的初始化，由JFormDesigner自动生成
+     */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         menuBar1 = new JMenuBar();
@@ -341,6 +422,7 @@ public class Win extends JFrame {
         setFont(new Font("Microsoft YaHei UI Light", Font.PLAIN, 16));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("\u5c0f\u538b\u7f29");
+        setMinimumSize(new Dimension(800, 600));
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
@@ -505,6 +587,9 @@ public class Win extends JFrame {
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
+    /**
+     * 各种组件的声明，由JFormDesigner自动生成
+     */
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JMenuBar menuBar1;
     private JMenu menuFile;
