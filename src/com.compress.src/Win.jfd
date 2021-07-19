@@ -9,27 +9,36 @@ new FormModel {
 			"font": new java.awt.Font( "Microsoft YaHei UI Light", 0, 16 )
 			"defaultCloseOperation": 3
 			"title": "小压缩"
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class javax.swing.BoxLayout ) ) {
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+				"alignment": 0
+				"vgap": 2
+			} ) {
 				name: "panel1"
-				"border": &EmptyBorder0 new javax.swing.border.EmptyBorder( 5, 5, 5, 5 )
+				"border": sfield com.jformdesigner.model.FormObject NULL_VALUE
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "upPath"
-					"text": "返回"
 					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/com.compress.resource/back.png" )
+					"toolTipText": "回到父目录"
+					"border": &EtchedBorder0 new javax.swing.border.EtchedBorder( 1, null, null )
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "upPathActionPerformed", true ) )
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "unZip"
-					"text": "解压"
 					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
 					"enabled": false
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/com.compress.resource/unZip.png" )
+					"toolTipText": "解压"
+					"border": #EtchedBorder0
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "unZipActionPerformed", true ) )
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "zip"
-					"text": "压缩"
 					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
 					"enabled": false
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/com.compress.resource/Zip.png" )
+					"toolTipText": "压缩"
+					"border": #EtchedBorder0
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "zipActionPerformed", true ) )
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
@@ -38,11 +47,11 @@ new FormModel {
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "scrollPaneDirAndFile"
 				"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
-				"border": #EmptyBorder0
+				"border": &BevelBorder0 new javax.swing.border.BevelBorder( 1, null, null, null, null )
 				add( new FormComponent( "javax.swing.JList" ) {
 					name: "showList"
 					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
-					"border": new javax.swing.border.EmptyBorder( 5, 5, 5, 5 )
+					"border": #BevelBorder0
 					addEvent( new FormEvent( "javax.swing.event.ListSelectionListener", "valueChanged", "showListValueChanged", true ) )
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "showListMouseClicked", true ) )
 				} )

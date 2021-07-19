@@ -451,26 +451,32 @@ public class Win extends JFrame {
 
         //======== panel1 ========
         {
-            panel1.setBorder(new EmptyBorder(5, 5, 5, 5));
-            panel1.setLayout(new BoxLayout(panel1, BoxLayout.X_AXIS));
+            panel1.setBorder(null);
+            panel1.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 2));
 
             //---- upPath ----
-            upPath.setText("\u8fd4\u56de");
             upPath.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
+            upPath.setIcon(new ImageIcon(getClass().getResource("/com.compress.resource/back.png")));
+            upPath.setToolTipText("\u56de\u5230\u7236\u76ee\u5f55");
+            upPath.setBorder(new EtchedBorder());
             upPath.addActionListener(e -> upPathActionPerformed(e));
             panel1.add(upPath);
 
             //---- unZip ----
-            unZip.setText("\u89e3\u538b");
             unZip.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
             unZip.setEnabled(false);
+            unZip.setIcon(new ImageIcon(getClass().getResource("/com.compress.resource/unZip.png")));
+            unZip.setToolTipText("\u89e3\u538b");
+            unZip.setBorder(new EtchedBorder());
             unZip.addActionListener(e -> unZipActionPerformed(e));
             panel1.add(unZip);
 
             //---- zip ----
-            zip.setText("\u538b\u7f29");
             zip.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
             zip.setEnabled(false);
+            zip.setIcon(new ImageIcon(getClass().getResource("/com.compress.resource/Zip.png")));
+            zip.setToolTipText("\u538b\u7f29");
+            zip.setBorder(new EtchedBorder());
             zip.addActionListener(e -> zipActionPerformed(e));
             panel1.add(zip);
         }
@@ -479,11 +485,11 @@ public class Win extends JFrame {
         //======== scrollPaneDirAndFile ========
         {
             scrollPaneDirAndFile.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
-            scrollPaneDirAndFile.setBorder(new EmptyBorder(5, 5, 5, 5));
+            scrollPaneDirAndFile.setBorder(new BevelBorder(BevelBorder.LOWERED));
 
             //---- showList ----
             showList.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
-            showList.setBorder(new EmptyBorder(5, 5, 5, 5));
+            showList.setBorder(new BevelBorder(BevelBorder.LOWERED));
             showList.addListSelectionListener(e -> showListValueChanged(e));
             showList.addMouseListener(new MouseAdapter() {
                 @Override
