@@ -4,9 +4,19 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.util.zip.*;
 
+/**
+ * 解压缩文件的类
+ */
 public class EntryMgr {
-    private static byte[] buff = new byte[1024];
+    private static byte[] buff = new byte[1024]; //缓冲区
 
+    /**
+     * 压缩数据中为文件到目标文件
+     *
+     * @param srcFiles   待压缩的文件
+     * @param targetFile 目标文件
+     * @throws IOException
+     */
     public static void entryFileArray(File[] srcFiles, String targetFile) throws IOException {
         //文件输出流
         FileOutputStream fout = new FileOutputStream(targetFile);
@@ -14,10 +24,39 @@ public class EntryMgr {
         CheckedOutputStream checkedOutputStream = new CheckedOutputStream(fout, new CRC32());
         //zip格式的输出流
         ZipOutputStream zout = new ZipOutputStream(checkedOutputStream, Charset.forName("gbk"));  //校验输出流传入
-        entryFileArray(zout, srcFiles, "");
+        entryFileArray(zout, srcFiles, "");//相对路径为空
         zout.close();
         fout.close();
     }
+
+    /**
+     * 递归地压缩文件
+     *
+     * @param zout         zip输出流
+     * @param srcArr       待压缩的文件
+     * @param zipEntryName 相对路径
+     * @throws IOException
+     */
+    private static void entryFileArray(ZipOutputStream zout, File[] srcArr, String zipEntryName) throws IOException {
+        //压缩目录，遍历目录里面的所有文件
+        for (File file : srcArr) {
+            if (file.isFile()) { //如果是文件，则直接调用压缩文件的方法进行压缩
+                zipFile(zout, file, zipEntryName + File.separator + file.getName());
+            } else {
+                //说明现在的file是目录，则需要将该目录的所有文件压缩
+                if (file.listFiles().length > 0) {  //非空文件夹
+                    //递归调用压缩子文件夹的方法
+                    entryFileArray(zout, file.listFiles(), zipEntryName + File.separator + file.getName());   //内容是： MFC/新建文件夹
+                } else {
+                    //空文件夹
+                    //将压缩条目写入到压缩对象中
+                    zout.putNextEntry(new ZipEntry(zipEntryName + File.separator + file.getName() + File.separator));   //最后添加斜线（通知解释器知道这是目录）
+                    zout.closeEntry();
+                }
+            }
+        }
+    }
+
 
     /**
      * @param zout         zip格式的文件输出流
@@ -39,28 +78,6 @@ public class EntryMgr {
         zout.closeEntry();
     }
 
-    private static void entryFileArray(ZipOutputStream zout, File[] srcArr, String zipEntryName) throws IOException {
-        //压缩目录，遍历目录里面的所有文件(当且仅当文件夹只有文件才能压缩，不含有其他文件夹)
-        for (File file : srcArr) {
-            if (file.isFile()) { //如果是文件，则直接调用压缩文件的方法进行压缩
-                zipFile(zout, file, zipEntryName + File.separator + file.getName());
-            } else {
-                //说明现在的file是目录，则需要将该目录的所有文件压缩
-                if (file.listFiles().length > 0) {  //非空文件夹
-                    //递归调用压缩子文件夹的方法
-                    entryFileArray(zout, file.listFiles(), zipEntryName + File.separator + file.getName());   //内容是： MFC/新建文件夹
-                } else {
-                    //空文件夹
-                    //将压缩条目写入到压缩对象中
-                    zout.putNextEntry(new ZipEntry(zipEntryName + File.separator + file.getName() + File.separator));   //最后添加斜线（通知解释器知道这是目录）
-                    zout.closeEntry();
-                }
-            }
-        }
-    }
-
-//解压
-
     /**
      * 解压文件或文件夹
      *
@@ -74,7 +91,7 @@ public class EntryMgr {
             //所读取数据校验和的输入流，校验和可用于验证输入数据的完整性
             CheckedInputStream checkedInputStream = new CheckedInputStream(fin, new CRC32());
             //zip格式的输入流
-            ZipInputStream zin = new ZipInputStream(checkedInputStream, Charset.forName("gbk"));   //校验输入流传入
+            ZipInputStream zin = new ZipInputStream(checkedInputStream, Charset.forName("gbk"));   //校验输入流传入，设置字符集为GBK不然解压中文文件名的文件有问题
             ZipEntry zipEntry;
             //遍历压缩文件中的所有压缩条目
             while ((zipEntry = zin.getNextEntry()) != null) {
