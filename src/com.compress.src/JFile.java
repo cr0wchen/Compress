@@ -31,7 +31,7 @@ public class JFile extends File {
     /**
      * 重写toString方法，使其在Jlist中显示的时候只显示当前的文件名
      *
-     * @return
+     * @return 显示在JList中的String
      */
     @Override
     public String toString() {

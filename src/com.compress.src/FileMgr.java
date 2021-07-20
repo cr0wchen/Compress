@@ -61,7 +61,7 @@ public class FileMgr {
     /**
      * 将待复制为文件数组引用赋值给copyArr
      *
-     * @param copyArr
+     * @param copyArr 待复制File数组
      */
     public void copy(File[] copyArr) {
         this.copyArr = copyArr;
@@ -134,7 +134,7 @@ public class FileMgr {
     /**
      * 改变当前文件夹路径
      *
-     * @param newPath
+     * @param newPath 新路径
      * @return true代表成功
      */
     public boolean changeFile(String newPath) {
