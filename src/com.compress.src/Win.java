@@ -307,7 +307,7 @@ public class Win extends JFrame {
             for (int i = 0; i < obList.size(); i++) {
                 fList[i] = (File) obList.get(i);//转换数组中为类型
             }
-            EntryMgr.entryFileArray(fList, s);//压缩文件
+            EntryMgr.zip(fList, s);//压缩文件
             JOptionPane.showMessageDialog(this, "压缩成功！");
         } catch (Exception ee) {
             ee.printStackTrace();

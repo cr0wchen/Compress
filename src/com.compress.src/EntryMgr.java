@@ -17,14 +17,14 @@ public class EntryMgr {
      * @param targetFile 目标文件
      * @throws IOException
      */
-    public static void entryFileArray(File[] srcFiles, String targetFile) throws IOException {
+    public static void zip(File[] srcFiles, String targetFile) throws IOException {
         //文件输出流
         FileOutputStream fout = new FileOutputStream(targetFile);
         //写入数据校验和的输出流，校验和可用于校验输出数据的完整性
         CheckedOutputStream checkedOutputStream = new CheckedOutputStream(fout, new CRC32());
         //zip格式的输出流
         ZipOutputStream zout = new ZipOutputStream(checkedOutputStream, Charset.forName("gbk"));  //校验输出流传入
-        entryFileArray(zout, srcFiles, "");//相对路径为空
+        zip(zout, srcFiles, "");//相对路径为空
         zout.close();
         fout.close();
     }
@@ -37,7 +37,7 @@ public class EntryMgr {
      * @param zipEntryName 相对路径
      * @throws IOException
      */
-    private static void entryFileArray(ZipOutputStream zout, File[] srcArr, String zipEntryName) throws IOException {
+    private static void zip(ZipOutputStream zout, File[] srcArr, String zipEntryName) throws IOException {
         //压缩目录，遍历目录里面的所有文件
         for (File file : srcArr) {
             if (file.isFile()) { //如果是文件，则直接调用压缩文件的方法进行压缩
@@ -46,7 +46,7 @@ public class EntryMgr {
                 //说明现在的file是目录，则需要将该目录的所有文件压缩
                 if (file.listFiles().length > 0) {  //非空文件夹
                     //递归调用压缩子文件夹的方法
-                    entryFileArray(zout, file.listFiles(), zipEntryName + File.separator + file.getName());   //内容是： MFC/新建文件夹
+                    zip(zout, file.listFiles(), zipEntryName + File.separator + file.getName());   //内容是： MFC/新建文件夹
                 } else {
                     //空文件夹
                     //将压缩条目写入到压缩对象中
@@ -143,7 +143,7 @@ public class EntryMgr {
 //        File[] arr = new File[1];
 //        arr[0] = new File(curPath + File.separator + "A.zip");
         try {
-            entryFileArray(arr, curPath + File.separator + "Digui_nameTest.zip");
+            zip(arr, curPath + File.separator + "Digui_nameTest.zip");
         } catch (IOException ee) {
             ee.printStackTrace();
         }
