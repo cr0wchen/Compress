@@ -1,5 +1,3 @@
-package com.compress.src;
-
 import javax.swing.filechooser.FileSystemView;
 import java.io.*;
 

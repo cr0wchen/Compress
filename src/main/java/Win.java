@@ -1,5 +1,3 @@
-package com.compress.src;
-
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
@@ -419,7 +417,7 @@ public class Win extends JFrame {
         showList = new JList();
 
         //======== this ========
-        setIconImage(new ImageIcon(getClass().getResource("/com.compress.resource/logo.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/logo.png")).getImage());
         setFont(new Font("Microsoft YaHei UI Light", Font.PLAIN, 16));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("\u5c0f\u538b\u7f29");
@@ -539,7 +537,7 @@ public class Win extends JFrame {
 
             //---- upPath ----
             upPath.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
-            upPath.setIcon(new ImageIcon(getClass().getResource("/com.compress.resource/back.png")));
+            upPath.setIcon(new ImageIcon(getClass().getResource("/back.png")));
             upPath.setToolTipText("\u56de\u5230\u7236\u76ee\u5f55");
             upPath.setBorder(new EtchedBorder());
             upPath.addActionListener(e -> upPathActionPerformed(e));
@@ -548,7 +546,7 @@ public class Win extends JFrame {
             //---- unZip ----
             unZip.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
             unZip.setEnabled(false);
-            unZip.setIcon(new ImageIcon(getClass().getResource("/com.compress.resource/unZip.png")));
+            unZip.setIcon(new ImageIcon(getClass().getResource("/unZip.png")));
             unZip.setToolTipText("\u89e3\u538b");
             unZip.setBorder(new EtchedBorder());
             unZip.addActionListener(e -> unZipActionPerformed(e));
@@ -557,7 +555,7 @@ public class Win extends JFrame {
             //---- zip ----
             zip.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
             zip.setEnabled(false);
-            zip.setIcon(new ImageIcon(getClass().getResource("/com.compress.resource/Zip.png")));
+            zip.setIcon(new ImageIcon(getClass().getResource("/Zip.png")));
             zip.setToolTipText("\u538b\u7f29");
             zip.setBorder(new EtchedBorder());
             zip.addActionListener(e -> zipActionPerformed(e));
