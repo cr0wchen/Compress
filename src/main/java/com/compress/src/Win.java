@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.zip.Deflater;
 
 /*
  * Created by JFormDesigner on Sat Jul 10 09:34:49 CST 2021
@@ -297,18 +298,26 @@ public class Win extends JFrame {
         if (showList.isSelectionEmpty()) return;
         List obList = showList.getSelectedValuesList();//获取选中的文件List
         String dest = fileMgr.getPath() + JFile.separator + fileMgr.getName() + ".zip";//默认压缩文件名
-        String s = JOptionPane.showInputDialog("目标文件：", dest);//获取用户输入的文件名
-        if (s == null) {
+        String path = JOptionPane.showInputDialog(this, "目标文件：", dest);//获取用户输入的文件名
+        if (path == null) {
             System.out.println(String.format("[%s] ", showList.getClass()) + "取消压缩。");
             return;
         }
-        System.out.println(String.format("[%s] ", EntryMgr.class) + "目标路径为" + s);
+        Object[] str = {"默认", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        Object object = JOptionPane.showInputDialog(this, "请选择压缩等级（数字越大体积越小）", "选择压缩等级", JOptionPane.INFORMATION_MESSAGE, null, str, str[0]);
+        if (object == null) {
+            System.out.println(String.format("[%s] ", showList.getClass()) + "取消压缩。");
+            return;
+        }
+        System.out.println(String.format("[%s] ", EntryMgr.class) + "压缩等级为：" + object + "," + "目标路径为" + path);
         try {
             File[] fList = new File[obList.size()];
             for (int i = 0; i < obList.size(); i++) {
                 fList[i] = (File) obList.get(i);//转换数组中为类型
             }
-            EntryMgr.zip(fList, s);//压缩文件
+            //获取压缩等级
+            int level = object instanceof String ? Deflater.DEFAULT_COMPRESSION : (int) object;
+            EntryMgr.zip(fList, path, level);//压缩文件
             JOptionPane.showMessageDialog(this, "压缩成功！");
         } catch (Exception ee) {
             ee.printStackTrace();
@@ -419,7 +428,7 @@ public class Win extends JFrame {
         showList = new JList();
 
         //======== this ========
-        setIconImage(new ImageIcon(getClass().getResource("/com.compress.resource/logo.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/logo.png")).getImage());
         setFont(new Font("Microsoft YaHei UI Light", Font.PLAIN, 16));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("\u5c0f\u538b\u7f29");
@@ -539,7 +548,7 @@ public class Win extends JFrame {
 
             //---- upPath ----
             upPath.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
-            upPath.setIcon(new ImageIcon(getClass().getResource("/com.compress.resource/back.png")));
+            upPath.setIcon(new ImageIcon(getClass().getResource("/back.png")));
             upPath.setToolTipText("\u56de\u5230\u7236\u76ee\u5f55");
             upPath.setBorder(new EtchedBorder());
             upPath.addActionListener(e -> upPathActionPerformed(e));
@@ -548,7 +557,7 @@ public class Win extends JFrame {
             //---- unZip ----
             unZip.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
             unZip.setEnabled(false);
-            unZip.setIcon(new ImageIcon(getClass().getResource("/com.compress.resource/unZip.png")));
+            unZip.setIcon(new ImageIcon(getClass().getResource("/unZip.png")));
             unZip.setToolTipText("\u89e3\u538b");
             unZip.setBorder(new EtchedBorder());
             unZip.addActionListener(e -> unZipActionPerformed(e));
@@ -557,7 +566,7 @@ public class Win extends JFrame {
             //---- zip ----
             zip.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 16));
             zip.setEnabled(false);
-            zip.setIcon(new ImageIcon(getClass().getResource("/com.compress.resource/Zip.png")));
+            zip.setIcon(new ImageIcon(getClass().getResource("/Zip.png")));
             zip.setToolTipText("\u538b\u7f29");
             zip.setBorder(new EtchedBorder());
             zip.addActionListener(e -> zipActionPerformed(e));

@@ -5,7 +5,7 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 			name: "this"
-			"iconImage": new com.jformdesigner.model.SwingIcon( 0, "/com.compress.resource/logo.png" )
+			"iconImage": new com.jformdesigner.model.SwingIcon( 0, "/logo.png" )
 			"font": new java.awt.Font( "Microsoft YaHei UI Light", 0, 16 )
 			"defaultCloseOperation": 3
 			"title": "小压缩"
@@ -19,7 +19,7 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "upPath"
 					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
-					"icon": new com.jformdesigner.model.SwingIcon( 0, "/com.compress.resource/back.png" )
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/back.png" )
 					"toolTipText": "回到父目录"
 					"border": &EtchedBorder0 new javax.swing.border.EtchedBorder( 1, null, null )
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "upPathActionPerformed", true ) )
@@ -28,7 +28,7 @@ new FormModel {
 					name: "unZip"
 					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
 					"enabled": false
-					"icon": new com.jformdesigner.model.SwingIcon( 0, "/com.compress.resource/unZip.png" )
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/unZip.png" )
 					"toolTipText": "解压"
 					"border": #EtchedBorder0
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "unZipActionPerformed", true ) )
@@ -37,7 +37,7 @@ new FormModel {
 					name: "zip"
 					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 16 )
 					"enabled": false
-					"icon": new com.jformdesigner.model.SwingIcon( 0, "/com.compress.resource/Zip.png" )
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/Zip.png" )
 					"toolTipText": "压缩"
 					"border": #EtchedBorder0
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "zipActionPerformed", true ) )

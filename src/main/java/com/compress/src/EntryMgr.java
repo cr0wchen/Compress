@@ -20,13 +20,14 @@ public class EntryMgr {
      * @param targetFile 目标文件
      * @throws IOException
      */
-    public static void zip(File[] srcFiles, String targetFile) throws IOException {
+    public static void zip(File[] srcFiles, String targetFile, int level) throws IOException {
         //文件输出流
         FileOutputStream fout = new FileOutputStream(targetFile);
         //写入数据校验和的输出流，校验和可用于校验输出数据的完整性
         CheckedOutputStream checkedOutputStream = new CheckedOutputStream(fout, new CRC32());
         //zip格式的输出流
         ZipOutputStream zout = new ZipOutputStream(checkedOutputStream, Charset.forName("gbk"));  //校验输出流传入
+        zout.setLevel(level);
         zip(zout, srcFiles, "");//相对路径为空
         zout.close();
         fout.close();
@@ -146,7 +147,7 @@ public class EntryMgr {
 //        File[] arr = new File[1];
 //        arr[0] = new File(curPath + File.separator + "A.zip");
         try {
-            zip(arr, curPath + File.separator + "Digui_nameTest.zip");
+            zip(arr, curPath + File.separator + "Digui_nameTest.zip",-1);
         } catch (IOException ee) {
             ee.printStackTrace();
         }
