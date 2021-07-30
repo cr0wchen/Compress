@@ -1,3 +1,5 @@
+package com.compress.src;
+
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
@@ -11,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.zip.Deflater;
 
 /*
  * Created by JFormDesigner on Sat Jul 10 09:34:49 CST 2021
@@ -295,18 +298,26 @@ public class Win extends JFrame {
         if (showList.isSelectionEmpty()) return;
         List obList = showList.getSelectedValuesList();//获取选中的文件List
         String dest = fileMgr.getPath() + JFile.separator + fileMgr.getName() + ".zip";//默认压缩文件名
-        String s = JOptionPane.showInputDialog("目标文件：", dest);//获取用户输入的文件名
-        if (s == null) {
+        String path = JOptionPane.showInputDialog(this, "目标文件：", dest);//获取用户输入的文件名
+        if (path == null) {
             System.out.println(String.format("[%s] ", showList.getClass()) + "取消压缩。");
             return;
         }
-        System.out.println(String.format("[%s] ", EntryMgr.class) + "目标路径为" + s);
+        Object[] str = {"默认", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        Object object = JOptionPane.showInputDialog(this, "请选择压缩等级（数字越大体积越小）", "选择压缩等级", JOptionPane.INFORMATION_MESSAGE, null, str, str[0]);
+        if (object == null) {
+            System.out.println(String.format("[%s] ", showList.getClass()) + "取消压缩。");
+            return;
+        }
+        System.out.println(String.format("[%s] ", EntryMgr.class) + "压缩等级为：" + object + "," + "目标路径为" + path);
         try {
             File[] fList = new File[obList.size()];
             for (int i = 0; i < obList.size(); i++) {
                 fList[i] = (File) obList.get(i);//转换数组中为类型
             }
-            EntryMgr.zip(fList, s);//压缩文件
+            //获取压缩等级
+            int level = object instanceof String ? Deflater.DEFAULT_COMPRESSION : (int) object;
+            EntryMgr.zip(fList, path, level);//压缩文件
             JOptionPane.showMessageDialog(this, "压缩成功！");
         } catch (Exception ee) {
             ee.printStackTrace();
