@@ -50,11 +50,11 @@ public class EntryMgr {
                 //说明现在的file是目录，则需要将该目录的所有文件压缩
                 if (file.listFiles().length > 0) {  //非空文件夹
                     //递归调用压缩子文件夹的方法
-                    zip(zout, file.listFiles(), zipEntryName + File.separator + file.getName());   //内容是： MFC/新建文件夹
+                    zip(zout, file.listFiles(), zipEntryName + File.separator + file.getName());
                 } else {
                     //空文件夹
-                    //将压缩条目写入到压缩对象中
-                    zout.putNextEntry(new ZipEntry(zipEntryName + File.separator + file.getName() + File.separator));   //最后添加斜线（通知解释器知道这是目录）
+                    //将压缩条目写入到压缩对象中,最后添加斜线（通知解释器知道这是目录）
+                    zout.putNextEntry(new ZipEntry(zipEntryName + File.separator + file.getName() + File.separator));
                     zout.closeEntry();
                 }
             }
@@ -64,7 +64,7 @@ public class EntryMgr {
 
     /**
      * @param zout         zip格式的文件输出流
-     * @param sourceFile   原文件路径（将要压缩的文件）
+     * @param sourceFile   源文件
      * @param zipEntryName 压缩条目（实际上就是文件的相对路径）
      * @throws IOException
      */
