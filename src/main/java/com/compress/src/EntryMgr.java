@@ -128,28 +128,4 @@ public class EntryMgr {
             e.printStackTrace();
         }
     }
-
-    public static void main(String[] args) {
-        //原文件（将解压文件的路径）
-        String sourcePath = "C:\\Users\\陈旭峰\\Desktop\\ls\\empty";
-        //输出文件路径
-        String outPath = "C:\\Users\\陈旭峰\\Desktop\\ls\\ercha.zip";
-
-        String curPath = "C:\\Users\\陈旭峰\\Desktop\\ls";
-
-        File[] arr = new File[4];
-        arr[0] = new File(curPath + File.separator + "A.zip");
-        arr[1] = new File(curPath + File.separator + "B.zip");
-        arr[2] = new File(curPath + File.separator + "C.zip");
-        arr[3] = new File(curPath + File.separator + "workspace" + File.separator);
-        System.out.println(arr[3].isDirectory());
-//        System.out.println(arr[0].getName());
-//        File[] arr = new File[1];
-//        arr[0] = new File(curPath + File.separator + "A.zip");
-        try {
-            zip(arr, curPath + File.separator + "Digui_nameTest.zip",-1);
-        } catch (IOException ee) {
-            ee.printStackTrace();
-        }
-    }
 }
