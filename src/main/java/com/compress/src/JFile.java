@@ -61,11 +61,4 @@ public class JFile extends File {
         }
         return result;
     }
-
-    public static void main(String[] args) {
-        FileSystemView fsv = FileSystemView.getFileSystemView();
-        File com = fsv.getHomeDirectory();
-        JFile itm = new JFile(com.getPath());
-        System.out.println(itm);
-    }
 }

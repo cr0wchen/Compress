@@ -45,6 +45,8 @@ public class Win extends JFrame {
         flushShowList();//刷新当前目录显示的文件
         UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));//设置对话框按钮字体的样式
         UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));//设置对话框消息字体样式
+        UIManager.put("TextField.font", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));//设置对话框输入字体样式
+        UIManager.put("ComboBox.font", new FontUIResource(new Font("Microsoft YaHei UI", Font.PLAIN, 16)));//设置对话框下拉列表字体样式
         {//设置按键的快捷键
             menuFile.setMnemonic('F');
             menuEditor.setMnemonic('E');

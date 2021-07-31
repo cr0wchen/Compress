@@ -205,18 +205,4 @@ public class FileMgr {
         return com.listFiles();
     }
 
-    public static void main(String[] args) {
-        FileMgr fileMgr = new FileMgr();
-        System.out.println(fileMgr.getPath());
-//        fileMgr.upPath();
-        System.out.println(fileMgr.getPath());
-        for (String s : fileMgr.list()) {
-            System.out.println(s);
-        }
-        fileMgr.upPath();
-        System.out.println(fileMgr.getPath());
-        fileMgr.upPath();
-//        fileMgr.upPath();
-        System.out.println(fileMgr.getPath());
-    }
 }

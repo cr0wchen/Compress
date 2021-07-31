@@ -50,11 +50,11 @@ public class EntryMgr {
                 //说明现在的file是目录，则需要将该目录的所有文件压缩
                 if (file.listFiles().length > 0) {  //非空文件夹
                     //递归调用压缩子文件夹的方法
-                    zip(zout, file.listFiles(), zipEntryName + File.separator + file.getName());   //内容是： MFC/新建文件夹
+                    zip(zout, file.listFiles(), zipEntryName + File.separator + file.getName());
                 } else {
                     //空文件夹
-                    //将压缩条目写入到压缩对象中
-                    zout.putNextEntry(new ZipEntry(zipEntryName + File.separator + file.getName() + File.separator));   //最后添加斜线（通知解释器知道这是目录）
+                    //将压缩条目写入到压缩对象中,最后添加斜线（通知解释器知道这是目录）
+                    zout.putNextEntry(new ZipEntry(zipEntryName + File.separator + file.getName() + File.separator));
                     zout.closeEntry();
                 }
             }
@@ -64,7 +64,7 @@ public class EntryMgr {
 
     /**
      * @param zout         zip格式的文件输出流
-     * @param sourceFile   原文件路径（将要压缩的文件）
+     * @param sourceFile   源文件
      * @param zipEntryName 压缩条目（实际上就是文件的相对路径）
      * @throws IOException
      */
@@ -126,30 +126,6 @@ public class EntryMgr {
             fin.close();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args) {
-        //原文件（将解压文件的路径）
-        String sourcePath = "C:\\Users\\陈旭峰\\Desktop\\ls\\empty";
-        //输出文件路径
-        String outPath = "C:\\Users\\陈旭峰\\Desktop\\ls\\ercha.zip";
-
-        String curPath = "C:\\Users\\陈旭峰\\Desktop\\ls";
-
-        File[] arr = new File[4];
-        arr[0] = new File(curPath + File.separator + "A.zip");
-        arr[1] = new File(curPath + File.separator + "B.zip");
-        arr[2] = new File(curPath + File.separator + "C.zip");
-        arr[3] = new File(curPath + File.separator + "workspace" + File.separator);
-        System.out.println(arr[3].isDirectory());
-//        System.out.println(arr[0].getName());
-//        File[] arr = new File[1];
-//        arr[0] = new File(curPath + File.separator + "A.zip");
-        try {
-            zip(arr, curPath + File.separator + "Digui_nameTest.zip",-1);
-        } catch (IOException ee) {
-            ee.printStackTrace();
         }
     }
 }
